@@ -1,0 +1,97 @@
+a.active{
+  background-color: white;
+  color: #007CF9!important;
+}
+
+a:not(.active){
+  background-color: #007CF9;
+  color: white;
+}
+
+body, html {
+  font-family: 'Roboto Slab', serif;
+  margin: 0px;
+  padding: 0;
+  background: url("../images/sunset.jpg") no-repeat center center fixed; 
+  background-size: cover;
+}
+
+.container { 
+	margin-top: 20px; 
+	text-align: center;
+	color: black;
+	font-size: 30pt;
+	margin-left:0 px;
+} 
+
+.form-row {
+	padding: 40px 10px 20px 10px; 
+	text-align: left;
+	background-color: rgba(255, 255, 255, .4);
+	font-family: 'Roboto Slab', serif;
+	font-size: 16px;	
+	border-radius: 5px;
+	border: 1px solid LightGray;
+}
+
+.title {
+	font-size: 22pt;
+	margin-top: 50px; 
+	color: white;
+}
+
+.btnThree {
+	text-align: right!important;
+	margin-top: 30px; 
+}
+
+.btnMargin {
+	margin-right: 10px;
+}
+
+@media (min-width: 320px) and (max-width: 992px) {
+	.btnThree {
+		text-align: left!important;
+		margin-left: 30px;
+		margin-top: 0px; 
+	}
+	
+	.btnMargin {
+		margin-right: 30px;
+	}
+}
+
+.results {
+	font-size: 16px;	
+}
+
+.tab-pane {
+	background-color: rgba(255, 255, 255);
+	padding: 15px;
+}
+
+.notop th {
+	border-top:none;
+}
+
+.nav-tabs {
+	border-top: 1px solid grey;
+	padding-top: 15px;
+}
+
+.hidden {
+   visibility: hidden;
+}
+
+.map {
+	height: 400px;
+   width: 100%;    
+}
+
+#temp_min {
+	color: blue;
+}
+
+#temp_max{
+   color: red;
+}
