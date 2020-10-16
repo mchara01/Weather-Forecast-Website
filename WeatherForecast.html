@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Weather Forecast Search</title>
+		<link rel="icon" type="image/png" href="images/sun-icon-32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="images/sun-icon-16.png" sizes="16x16" />
+		
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+		
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+		
+		<link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+		
+		<link rel="stylesheet" href="css/wheather.css"/>
+		<script src="./js/weatherscript.js" defer></script> 
+		
+	</head>
+  
+	<body>
+	
+		<section class="container"> 
+			<h2 class="title">Weather Forecast Search</h2>
+		</section> 
+		
+		<section class="container">
+				<form> 
+				
+					<div class="form-row">
+					
+						<div class="form-group col-lg-3 col-md-12 col-sm-12">
+							<label for="address">Address<span style="color:red;font-weight:bold">*</span></label> 
+							<input type="text" class="form-control" id="addressField" placeholder="Enter address" name="address" required> 
+							<small id="wrong-address" class="form-text hidden" style="color:red">Please enter your address!</small>
+						</div> 
+						
+						<div class="form-group col-lg-2 col-md-12 col-sm-12">
+							<label for="region">Region<span style="color:red;font-weight:bold">*</span></label> 
+							<input type="text" class="form-control" id="regionField" placeholder="Enter region" name="region" required> 
+							<small id="wrong-region" class="form-text hidden" style="color:red">Please enter your region!</small>
+						</div> 
+						
+						<div class="form-group col-lg-2 col-md-12 col-sm-12">
+							<label for="city">City<span style="color:red;font-weight:bold">*</span></label> 
+							<select id="cityField" class="form-control">
+								<option selected>Select city</option>
+								<option>Nicosia</option>
+								<option>Larnaca</option>
+								<option>Paphos</option>
+								<option>Limassol</option>
+								<option>Famagusta</option>
+							</select>
+							<small id="wrong-city" class="form-text hidden" style="color:red">Please select your city!</small>
+						</div>
+						
+						<div class="form-group col-lg-2 col-md-12 col-sm-12">
+							<label for="city">Degree<span style="color:red;font-weight:bold">*</span></label> 
+							<fieldset class="form-group">
+								<div class="form-check form-check-inline">
+									<input id="celsius" class="form-check-input" type="radio" name="inlineRadioOptions"  value="option1" checked>
+									<label class="form-check-label" for="inlineRadio1">°C</label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input  id="fahrenheit" class="form-check-input" type="radio" name="inlineRadioOptions" value="option2">
+								  <label class="form-check-label" for="inlineRadio2">°F</label>
+								</div>
+							</fieldset>
+						</div>
+						
+						<div class="form-group col-lg-3 col-md-12 col-sm-12">
+							<div class="btnThree">
+								<button type="button" class="btn btn-primary btnMargin" onclick="validationCheck()"><i class="fas fa-search"></i> Search</button>
+								<button type="button" class="btn btn-danger btnMargin" onclick="cleanAll()"><i class="fas fa-ban"></i></button>
+								<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#log5" onclick="serverFive()"><i class="fas fa-server"></i></button>
+							</div>
+						</div>	
+						
+						<div class="modal fade" id="log5">
+							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+								<div class="modal-content">
+									<!-- Modal header -->
+									<div class="modal-header">
+										<h5 class="modal-title">Last 5 requests</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden = "true">×</span>
+										</button>
+									</div>
+									 <!-- Modal body -->
+									<div class="modal-body">
+										<div class="table-responsive">
+											<table class="table table-striped">
+												<thead>
+													<tr>
+														<th>Time</th>
+														<th>Address</th>
+														<th>Region</th>
+														<th>City</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td id="logTime1"></td>
+														<td id="logAddress1"></td>
+														<td id="logRegion1"></td>
+														<td id="logCity1"></td>
+													</tr> 
+													<tr>
+														<td id="logTime2"></td>
+														<td id="logAddress2"></td>
+														<td id="logRegion2"></td>
+														<td id="logCity2"></td>
+													</tr>
+													<tr>
+														<td id="logTime3"></td>
+														<td id="logAddress3"></td>
+														<td id="logRegion3"></td>
+														<td id="logCity3"></td>
+													</tr> 
+													<tr>
+														<td id="logTime4"></td>
+														<td id="logAddress4"></td>
+														<td id="logRegion4"></td>
+														<td id="logCity4"></td>
+													</tr>
+													<tr>
+														<td id="logTime5"></td>
+														<td id="logAddress5"></td>
+														<td id="logRegion5"></td>
+														<td id="logCity5"></td>
+													</tr>											
+												</tbody> 
+											</table>
+										</div>
+									</div>
+									<!-- Modal footer -->
+									<div class="modal-footer">
+									  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> 	
+				</form>
+		</section> 
+		
+		<section id="resultSection" class="container results d-none">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link active" data-toggle="tab" href="#rightNow" id="rightNow-tab">Right Now</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#next24" id="next24-tab">Next 24 hours</a>
+			  </li>
+			</ul>
+			
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<!-- RIGHT NOW TAB -->
+				<div class="tab-pane fade show active" id="rightNow"><!--rightNow-tab-->
+					<div class="row" > <!--id="rightNow"-->
+					
+						<div class="col-lg-6 col-md-12 col-sm-12">
+							<section class="rightNowLeftSection">
+							
+								<table class="table table-striped notop">
+								
+									<thead>		
+										<tr>
+											<th>
+												<img src="" id="icon" width="100" height="100">
+											</th>
+											<th>
+												<small id="description"> </small>
+												<div>
+													<h3 id="temp"></h3>
+												</div>
+												<small id="temp_min"></small>
+												<small id="temp_max"></small>
+											</th>
+
+										</tr>
+									</thead>
+									
+									<tbody>
+										<tr>
+											<td>Pressure</td>
+											<td id="pressure"></td>
+										</tr> 
+										<tr>
+											<td>Humidity</td>
+											<td id="humidity"></td> 
+										</tr>							
+										<tr>		
+											<td>Wind Speed</td>
+											<td id="windSpeed"></td>
+										</tr> 
+										<tr>
+											<td>Cloud Cover</td>
+											<td id="cloudsCover"></td> 
+										</tr>
+										<tr>
+											<td>Sunrise</td>
+											<td id="sunrise"></td> 
+										</tr>	
+										<tr>
+											<td>Sunset</td>
+											<td id="sunset"></td> 
+										</tr>
+									</tbody> 
+									
+								</table>	
+							</section>
+						</div>
+						
+						<div id="map" class="col-lg-6 col-md-12 col-sm-12"></div>
+												
+					</div>	
+				</div>	
+				
+				<!-- NEXT 24 HOURS TAB -->
+				<div class="tab-pane fade" id="next24">
+					<div class="row" > 
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<div class="table-responsive">
+								<table class="table table-striped"> 
+									<thead>
+										<tr>
+											<th>Time</th>
+											<th>Summary</th>
+											<th>Temp</th>
+											<th>Cloud Cover</th>
+											<th>Details</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td id="time1"></td>
+											<td ><img src="" id="summary1" width="50" height="50"></td>
+											<td id="temp1"></td>
+											<td id="cloudcover1"></td>
+											<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#view1">View</button></td>
+										</tr> 
+										<tr>
+											<td id="time2"></td>
+											<td ><img src="" id="summary2" width="50" height="50"></td>
+											<td id="temp2"></td>
+											<td id="cloudcover2"></td>
+											<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#view2">View</button></td>
+										</tr> 						
+										<tr>
+											<td id="time3"></td>
+											<td ><img src="" id="summary3" width="50" height="50"></td>
+											<td id="temp3"></td>
+											<td id="cloudcover3"></td>
+											<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#view3">View</button></td>
+										</tr> 
+										<tr>
+											<td id="time4"></td>
+											<td ><img src="" id="summary4" width="50" height="50"></td>
+											<td id="temp4"></td>
+											<td id="cloudcover4"></td>
+											<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#view4">View</button></td>
+										</tr> 
+										<tr>
+											<td id="time5"></td>
+											<td ><img src="" id="summary5" width="50" height="50"></td>
+											<td id="temp5"></td>
+											<td id="cloudcover5"></td>
+											<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#view5">View</button></td>
+										</tr> 
+										<tr>
+											<td id="time6"></td>
+											<td ><img src="" id="summary6" width="50" height="50"></td>
+											<td id="temp6"></td>
+											<td id="cloudcover6"></td>
+											<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#view6">View</button></td>
+										</tr> 
+										<tr>
+											<td id="time7"></td>
+											<td ><img src="" id="summary7" width="50" height="50"></td>
+											<td id="temp7"></td>
+											<td id="cloudcover7"></td>
+											<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#view7">View</button></td>
+										</tr> 
+										<tr>
+											<td id="time8"></td>
+											<td ><img src="" id="summary8" width="50" height="50"></td>
+											<td id="temp8"></td>
+											<td id="cloudcover8"></td>
+											<td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#view8">View</button></td>
+										</tr> 
+									</tbody> 
+								</table>	
+							<div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- ALL VIEW MODALS -->
+			
+			<!-- VIEW ROW 1 -->
+			<div class="modal fade" id="view1">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="viewheader1"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden = "true">×</span>
+							</button>
+						</div>
+										 
+						<div class="modal-body">
+						
+							<div class="row">
+								<div class="col-sm-6">
+                           <img src="" id="view1icon">
+                        </div>
+								<div id="view1description" class="col-sm-6"></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+                           <strong>Humidity</strong>
+                           <div id="view1Humidity"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Pressure</strong>
+									<div id="view1Pressure"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Wind Speed</strong>
+                           <div id="view1WindSpeed"></div>
+                        </div>
+							</div>
+				
+						</div>
+										
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+						
+					</div>
+				</div> 
+			</div> 		
+			
+			<!-- VIEW ROW 2 -->
+			<div class="modal fade" id="view2">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="viewheader2"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden = "true">×</span>
+							</button>
+						</div>
+										 
+						<div class="modal-body">
+						
+							<div class="row">
+								<div class="col-sm-6">
+                           <img src="" id="view2icon">
+                        </div>
+								<div id="view2description" class="col-sm-6"></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+                           <strong>Humidity</strong>
+                           <div id="view2Humidity"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Pressure</strong>
+									<div id="view2Pressure"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Wind Speed</strong>
+                           <div id="view2WindSpeed"></div>
+                        </div>
+							</div>
+				
+						</div>
+										
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+						
+					</div>
+				</div> 
+			</div> 
+			
+			
+			<!-- VIEW ROW 3 -->
+			<div class="modal fade" id="view3">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="viewheader3"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden = "true">×</span>
+							</button>
+						</div>
+										 
+						<div class="modal-body">
+						
+							<div class="row">
+								<div class="col-sm-6">
+                           <img src="" id="view3icon">
+                        </div>
+								<div id="view3description" class="col-sm-6"></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+                           <strong>Humidity</strong>
+                           <div id="view3Humidity"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Pressure</strong>
+									<div id="view3Pressure"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Wind Speed</strong>
+                           <div id="view3WindSpeed"></div>
+                        </div>
+							</div>
+				
+						</div>
+										
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+						
+					</div>
+				</div> 
+			</div> 
+			
+			<!-- VIEW ROW 4 -->
+			<div class="modal fade" id="view4">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="viewheader4"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden = "true">×</span>
+							</button>
+						</div>
+										 
+						<div class="modal-body">
+						
+							<div class="row">
+								<div class="col-sm-6">
+                           <img src="" id="view4icon">
+                        </div>
+								<div id="view4description" class="col-sm-6"></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+                           <strong>Humidity</strong>
+                           <div id="view4Humidity"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Pressure</strong>
+									<div id="view4Pressure"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Wind Speed</strong>
+                           <div id="view4WindSpeed"></div>
+                        </div>
+							</div>
+				
+						</div>
+										
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+						
+					</div>
+				</div> 
+			</div> 
+			
+			<!-- VIEW ROW 5 -->
+			<div class="modal fade" id="view5">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="viewheader5"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden = "true">×</span>
+							</button>
+						</div>
+										 
+						<div class="modal-body">
+						
+							<div class="row">
+								<div class="col-sm-6">
+                           <img src="" id="view5icon">
+                        </div>
+								<div id="view5description" class="col-sm-6"></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+                           <strong>Humidity</strong>
+                           <div id="view5Humidity"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Pressure</strong>
+									<div id="view5Pressure"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Wind Speed</strong>
+                           <div id="view5WindSpeed"></div>
+                        </div>
+							</div>
+				
+						</div>
+										
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+						
+					</div>
+				</div> 
+			</div> 
+			
+			<!-- VIEW ROW 6 -->
+			<div class="modal fade" id="view6">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="viewheader6"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden = "true">×</span>
+							</button>
+						</div>
+										 
+						<div class="modal-body">
+						
+							<div class="row">
+								<div class="col-sm-6">
+                           <img src="" id="view6icon">
+                        </div>
+								<div id="view6description" class="col-sm-6"></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+                           <strong>Humidity</strong>
+                           <div id="view6Humidity"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Pressure</strong>
+									<div id="view6Pressure"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Wind Speed</strong>
+                           <div id="view6WindSpeed"></div>
+                        </div>
+							</div>
+				
+						</div>
+										
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+						
+					</div>
+				</div> 
+			</div> 
+			
+			<!-- VIEW ROW 7 -->
+			<div class="modal fade" id="view7">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="viewheader7"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden = "true">×</span>
+							</button>
+						</div>
+										 
+						<div class="modal-body">
+						
+							<div class="row">
+								<div class="col-sm-6">
+                           <img src="" id="view7icon">
+                        </div>
+								<div id="view7description" class="col-sm-6"></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+                           <strong>Humidity</strong>
+                           <div id="view7Humidity"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Pressure</strong>
+									<div id="view7Pressure"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Wind Speed</strong>
+                           <div id="view7WindSpeed"></div>
+                        </div>
+							</div>
+				
+						</div>
+										
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+						
+					</div>
+				</div> 
+			</div> 
+			
+			<!-- VIEW ROW 8 -->
+			<div class="modal fade" id="view8">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="viewheader8"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden = "true">×</span>
+							</button>
+						</div>
+										 
+						<div class="modal-body">
+						
+							<div class="row">
+								<div class="col-sm-6">
+                           <img src="" id="view8icon">
+                        </div>
+								<div id="view8description" class="col-sm-6"></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+                           <strong>Humidity</strong>
+                           <div id="view8Humidity"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Pressure</strong>
+									<div id="view8Pressure"></div>
+                        </div>
+								<div class="col-lg-4">
+                           <strong>Wind Speed</strong>
+                           <div id="view8WindSpeed"></div>
+                        </div>
+							</div>
+				
+						</div>
+										
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+						
+					</div>
+				</div> 
+			</div> 
+			
+		</section>
+		
+		<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script> 
+		
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+		
+	</body>
+</html>
